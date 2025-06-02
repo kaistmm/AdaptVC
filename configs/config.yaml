@@ -1,0 +1,71 @@
+hidden_dim: 768
+adapter_layers: 12
+ssl_model: facebook/hubert-base-ls960
+cache_dir: assets/hubert-base-ls960
+codebook_dim: 512
+
+mel_params:
+  sample_rate: 16000
+  n_fft: 1280
+  window_length: 1280
+  hop_length: 320
+  center: false
+  normalized: false
+  power: 1
+  n_mels: 80
+  clamp_min: 1.e-5
+  eps: 1.e-09
+
+audio_aug_params:
+  data:
+    win_length: 1280
+    hop_length: 320
+    filter_length: 1280
+    sampling_rate: 16000
+
+attention_params:
+  num_heads: 32
+  dropout: 0.1
+  batch_first: true
+
+cfm_params:
+  name: CFM
+  solver: euler
+  sigma_min: 1.e-4
+
+decoder_params:
+  channels:
+    - 512
+    - 512
+  dropout: 0.05
+  attention_head_dim: 64
+  n_blocks: 2
+  num_mid_blocks: 2
+  num_heads: 2
+  act_fn: snakebeta
+  condition_dim: 768
+
+optimizer_params:
+  lr: 3.e-4
+  betas:
+    - 0.9
+    - 0.98
+  eps: 1.e-09
+  weight_decay: 1.e-5
+
+scheduler_params:
+  mode: "min"
+  factor: 0.99
+  patience: 20
+  threshold: 0.0001
+  threshold_mode: "rel"
+  cooldown: 0
+  min_lr: 1.e-4
+  eps: 1.e-8
+  # step_size: 1
+  # gamma: 1
+
+loss_weights:
+  loss_prior: 1
+  loss_diff: 1
+  loss_vq: 1
